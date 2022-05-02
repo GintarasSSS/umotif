@@ -6,4 +6,5 @@ Steps:
 4. For tests run `./test.sh`
 
 Tested on `Windows 10 Enterprise` -v `21H2`
+
 Used `Laravel 8.83.10` - doesn't require Docker to run
