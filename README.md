@@ -8,3 +8,5 @@ Steps:
 Tested on `Windows 10 Enterprise` -v `21H2`
 
 Used `Laravel 8.83.10` - doesn't require Docker to run
+
+![image](https://user-images.githubusercontent.com/7840319/166333343-e28db543-a2d0-4250-8b80-563bdf52ae5f.png)
