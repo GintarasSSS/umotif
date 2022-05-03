@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ParticipantsPostRequest;
 use App\Models\Cohort;
 use App\Models\Participant;
+use Illuminate\Database\Eloquent\Collection;
 
 class ParticipantController extends Controller
 {
@@ -15,12 +16,14 @@ class ParticipantController extends Controller
 
     public function index()
     {
+        $cohorts = $this->getCohorts();
+
         return view(
             'tables',
             [
                 'cohorts' => [
-                    $this->getCohort(self::DEFAULT_COHORT),
-                    $this->getCohort(self::DAILY_COHORT)
+                    'Cohort A' => $cohorts->where('id', self::DEFAULT_COHORT)->first(),
+                    'Cohort B' => $cohorts->where('id', self::DAILY_COHORT)->first()
                 ]
             ]
         );
@@ -47,10 +50,10 @@ class ParticipantController extends Controller
         return back()->with('success', sprintf($message, $data['first_name'], $cohort->name));
     }
 
-    private function getCohort(int $cohortId): ?Cohort
+    private function getCohorts(): ?Collection
     {
         return Cohort::with(['participants' => function ($query) {
             $query->with(['frequency', 'dailyFrequency']);
-        }])->find($cohortId);
+        }])->get();
     }
 }
