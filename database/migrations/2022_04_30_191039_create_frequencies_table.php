@@ -16,9 +16,12 @@ class CreateFrequenciesTable extends Migration
         Schema::create('frequencies', function (Blueprint $table) {
             $table->id();
             $table->string('name', 50);
+            $table->unsignedInteger('cohort_id');
 
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
+
+            $table->foreign('cohort_id')->references('id')->on('cohorts');
         });
     }
 

@@ -3,28 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ParticipantsPostRequest;
-use App\Models\Cohort;
+use App\Models\Frequency;
 use App\Models\Participant;
 use Illuminate\Database\Eloquent\Collection;
 
 class ParticipantController extends Controller
 {
-    const DAILY_FREQUENCY = 1;
-    const DAILY_COHORT = 2;
-
-    const DEFAULT_COHORT = 1;
+    const MESSAGE_PATTERN = 'Candidate %s is assigned to %s';
 
     public function index()
     {
-        $cohorts = $this->getCohorts();
-
         return view(
             'tables',
             [
-                'cohorts' => [
-                    'Cohort A' => $cohorts->where('id', self::DEFAULT_COHORT)->first(),
-                    'Cohort B' => $cohorts->where('id', self::DAILY_COHORT)->first()
-                ]
+                'cohorts' => $this->getParticipants()
             ]
         );
     }
@@ -33,27 +25,22 @@ class ParticipantController extends Controller
     {
         $data = $request->toArray();
 
-        switch ($data['frequency_id']) {
-            case self::DAILY_FREQUENCY:
-                $cohort = Cohort::find(self::DAILY_COHORT);
-                $message = 'Candidate %s is assigned to %s';
-                break;
-            default:
-                $cohort = Cohort::find(self::DEFAULT_COHORT);
-                $message = 'Participant %s is assigned to %s';
-        }
-
-        $data['cohort_id'] = $cohort->id;
+        $frequency = Frequency::with(['cohort'])->find($data['frequency_id']);
 
         Participant::create($data);
 
-        return back()->with('success', sprintf($message, $data['first_name'], $cohort->name));
+        return back()->with('success', sprintf(self::MESSAGE_PATTERN, $data['first_name'], $frequency->cohort->name));
     }
 
-    private function getCohorts(): ?Collection
+    private function getParticipants(): ?Collection
     {
-        return Cohort::with(['participants' => function ($query) {
-            $query->with(['frequency', 'dailyFrequency']);
-        }])->get();
+        return Participant::with([
+            'dailyFrequency',
+            'frequency' => function($query) {
+                $query->with(['cohort']);
+            }
+        ])
+            ->get()
+            ->groupBy('frequency.cohort.id');
     }
 }

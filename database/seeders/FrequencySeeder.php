@@ -20,15 +20,18 @@ class FrequencySeeder extends Seeder
         DB::table('frequencies')->insert([
             [
                 'id' => 1,
-                'name' => 'Daily'
+                'name' => 'Daily',
+                'cohort_id' => 2
             ],
             [
                 'id' => 2,
-                'name' => 'Weekly'
+                'name' => 'Weekly',
+                'cohort_id' => 1
             ],
             [
                 'id' => 3,
-                'name' => 'Monthly'
+                'name' => 'Monthly',
+                'cohort_id' => 1
             ]
         ]);
     }

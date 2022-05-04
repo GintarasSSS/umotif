@@ -11,8 +11,8 @@ class Cohort extends Model
 
     protected $table = 'cohorts';
 
-    public function participants()
+    public function frequencies()
     {
-        return $this->hasMany(Participant::class);
+        return $this->hasMany(Frequency::class);
     }
 }

@@ -15,14 +15,8 @@ class Participant extends Model
         'first_name',
         'date_of_birth',
         'frequency_id',
-        'daily_frequency_id',
-        'cohort_id'
+        'daily_frequency_id'
     ];
-
-    public function cohort()
-    {
-        return $this->belongsTo(Cohort::class);
-    }
 
     public function frequency()
     {

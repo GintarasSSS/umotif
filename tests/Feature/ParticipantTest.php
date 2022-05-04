@@ -81,7 +81,14 @@ class ParticipantTest extends TestCase
             'participants',
             [
                 'first_name' => $name,
-                'frequency_id' => $frequency->id,
+                'frequency_id' => $frequency->id
+            ]
+        );
+
+        $this->assertDatabaseHas(
+            'frequencies',
+            [
+                'id' => $frequency->id,
                 'cohort_id' => $cohort->id
             ]
         );

@@ -19,14 +19,12 @@ class CreateParticipantsTable extends Migration
             $table->timestamp('date_of_birth');
             $table->unsignedInteger('frequency_id');
             $table->unsignedInteger('daily_frequency_id')->nullable();
-            $table->unsignedInteger('cohort_id');
 
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
 
             $table->foreign('frequency_id')->references('id')->on('frequencies');
             $table->foreign('daily_frequency_id')->references('id')->on('daily_frequencies');
-            $table->foreign('cohort_id')->references('id')->on('cohorts');
         });
     }
 

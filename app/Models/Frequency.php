@@ -15,4 +15,9 @@ class Frequency extends Model
     {
         return $this->hasMany(Participant::class);
     }
+
+    public function cohort()
+    {
+        return $this->belongsTo(Cohort::class);
+    }
 }
